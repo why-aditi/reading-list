@@ -61,16 +61,19 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.post("/add-book", async (req, res) => {
-  const { title } = req.body;
+app.get("/add-book", (req, res) => {
+  res.render("add-book");
+});
 
-  try {
-    await fetchAndStoreBook(title);
-    res.redirect("/");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Error adding book");
-  }
+app.post("/add-book", (req, res) => {
+  const newBook = {
+    title: req.body.title,
+    author: req.body.author,
+    edition: req.body.edition,
+    cover_id: req.body.cover_id,
+  };
+  books.push(newBook);
+  res.redirect("/");
 });
 
 app.listen(port, () => {
